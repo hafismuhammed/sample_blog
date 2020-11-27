@@ -15,6 +15,10 @@
                   <div class="category"><a href="#">{{ cat }}</a></div>
                   {% endfor %}
                 </div>
+                {% if request.user.is_staff %}
+                <a href="{% url 'update_post' id=post.id %}">Update</a>
+                <a href="{% url 'delete_post' id=post.id %}">Delete</a>
+                {% endif %}
                 <h1>{{ post.title }}<a href="#"><i class="fa fa-bookmark-o"></i></a></h1>
                 <div class="post-footer d-flex align-items-center flex-column flex-sm-row"><a href="#" class="author d-flex align-items-center flex-wrap">
                     <div class="avatar"><img src="{{ post.author.profile_picture.url }}" alt="..." class="img-fluid"></div>
@@ -28,7 +32,6 @@
                 <div class="post-body">
                    {{ post.content | safe }}
                 </div>
-                <div class="post-tags"><a href="#" class="tag">#Business</a><a href="#" class="tag">#Tricks</a><a href="#" class="tag">#Financial</a><a href="#" class="tag">#Economy</a></div>
                 <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
                   {% if post.previous_post %}
                   <a href="{{ post.previous_post.get_absolute_url }}" class="prev-post text-left d-flex align-items-center">

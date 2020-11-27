@@ -47,6 +47,16 @@ class Post(models.Model):
     def get_comments(self):
         return self.comments.all().order_by('-timestamp')
 
+    def get_update_url(self):
+        return reverse('update_post', kwargs={
+        'id': self.id
+    })
+
+    def get_delete_url(self):
+        return reverse('delete_post', kwargs={
+        'id': self.id
+    })
+
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)

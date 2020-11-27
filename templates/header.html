@@ -8,9 +8,9 @@
           <div class="close-btn"><i class="icon-close"></i></div>
           <div class="row d-flex justify-content-center">
             <div class="col-md-8">
-              <form action="#">
+              <form action="{% url 'search' %}">
                 <div class="form-group">
-                  <input type="search" name="search" id="search" placeholder="What are you looking for?">
+                  <input type="search" name="q" id="search" placeholder="What are you looking for?">
                   <button type="submit" class="submit"><i class="icon-search-1"></i></button>
                 </div>
               </form>
@@ -32,8 +32,10 @@
             </li>
             <li class="nav-item"><a href="{% url 'blog' %}" class="nav-link ">Blog</a>
             </li>
-            <li class="nav-item"><a href="" class="nav-link ">Post</a>
+            {% if request.user.is_staff %}
+            <li class="nav-item"><a href="{% url 'create_post' %}" class="nav-link ">Create Post</a>
             </li>
+            {% endif %}
             <li class="nav-item"><a href="#" class="nav-link ">Contact</a>
             </li>
           </ul>
