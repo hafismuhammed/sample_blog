@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="row">
+        <main class="post blog-post col-lg-8">
+            <div class="container">
+                <h1>Are you sure you want to delete {{ object }} ?</h1>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-danger" value="Confirm">
+                </form>
+            </div>
+        </main>
+        {% include 'sidebar.html' %}
+    </div>
+</div>
+
+{% endblock %}

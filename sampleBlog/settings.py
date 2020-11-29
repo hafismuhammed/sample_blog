@@ -37,11 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
-    'blog',
-    'marketing',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
     'tinymce',
     'crispy_forms',
+    'blog',
+    'marketing',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -178,3 +183,11 @@ TINYMCE_DEFAULT_CONFIG = {
 MAILCHIMP_API_KEY = ''
 MAILCHIMP_DATA_CENTER = ''
 MAILCHIMP_EMAIL_LIST_ID = ''
+
+# django allauth
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+SITE_ID = 1

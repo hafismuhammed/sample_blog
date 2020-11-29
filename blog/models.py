@@ -19,13 +19,31 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+       
+class PostView(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', related_name='comments', on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+
+    def __str__(self):
+        return self.user.username
+
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
     overview = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
-    comment_count = models.IntegerField(default=0)
-    view_count = models.IntegerField(default=0)
+    #comment_count = models.IntegerField(default=0)
+    #view_count = models.IntegerField(default=0)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     content = HTMLField()
     thumpnail = models.ImageField()
@@ -40,29 +58,27 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post_detail', kwargs={
-            'id': self.id
+            'pk': self.pk
         })
+
+    def get_update_url(self):
+        return reverse('update_post', kwargs={
+        'pk': self.pk
+    })
+
+    def get_delete_url(self):
+        return reverse('delete_post', kwargs={
+        'pk': self.pk
+    })
 
     @property
     def get_comments(self):
         return self.comments.all().order_by('-timestamp')
 
-    def get_update_url(self):
-        return reverse('update_post', kwargs={
-        'id': self.id
-    })
+    @property
+    def view_count(self):
+        return PostView.objects.filter(post=self).count()
 
-    def get_delete_url(self):
-        return reverse('delete_post', kwargs={
-        'id': self.id
-    })
-
-class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    content = models.TextField()
-
-    def __str__(self):
-        return self.user.username
-       
+    @property
+    def comment_count(self):
+        return Comment.objects.filter(post=self).count()
